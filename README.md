@@ -9,7 +9,7 @@ This repository contains the Dockerfile for building an Arxiv Paper Bot that fet
 1. Clone the repository:
 
 ```
-git clone https://github.com/yourusername/arxiv-paper-bot.git
+git clone https://github.com/45645615/arxiv-daily.git
 cd arxiv-paper-bot
 ```
 
