@@ -32,8 +32,6 @@ docker build --build-arg GPT_TOKEN=$GPT_TOKEN --build-arg SLACK_TOKEN=$SLACK_TOK
 docker run -it --rm arxiv-paper-bot
 ```
 
-The Arxiv Paper Bot will now fetch relevant papers from Arxiv and post them to the specified Slack channel.
-
 
 ## Credits
 Part of the code is based the following gist:
