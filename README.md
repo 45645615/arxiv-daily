@@ -35,9 +35,10 @@ docker run -it --rm arxiv-paper-bot
 The Arxiv Paper Bot will now fetch relevant papers from Arxiv and post them to the specified Slack channel.
 
 
-
-
-
+## Credits
+Part of the code is based the following gist:
+(https://gist.github.com/resnant/d42ae67315f0c073e3c244a913f6d408) 
+by [Yuta Suzuki](https://github.com/resnant)
 ### License
 
 This project is licensed under the MIT License.
