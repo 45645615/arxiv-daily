@@ -2,7 +2,7 @@
 
 ## Arxiv Paper Bot
 
-This repository contains the Dockerfile for building an Arxiv Paper Bot that fetches and summarizes relevant papers from Arxiv and posts them to a specified Slack channel using the GPT-3.5-turbo model from OpenAI.
+This repository contains the Dockerfile for building an Arxiv Paper Bot that fetches and summarizes relevant papers from Arxiv using the GPT-3.5-turbo model from OpenAI and posts them to a specified Slack channel .
 
 ### Installation
 
