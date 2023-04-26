@@ -7,12 +7,15 @@ const ARXIV_QUERY = ["cat:cs.cv", "cat:cs.AI", "cat:cs.LG", "cat:cs.CL"];
 const SATARXIV_QUERY = ["cat:math.*", "cat:stat.*"];
 const SUNARXIV_QUERY = ["cat:econ.*", "cat:q-fin.*"];
 
-const MAX_PAPER_COUNT = 200;
+const MAX_PAPER_COUNT = 50;
 const ARXIV_TERM = 1;
 
-const SELECTION_PREFIX = "You are an expert in deep learning. Your PhD student studies on applying Deep Learning onto Computer Vision, Medical Imaging, and Surgical Vision.\
+const CHANNEL = '#daily-dose-of-arxiv'
+// const CHANNEL = '#arxiv-debug'
+
+const SELECTION_PREFIX = `You are an expert in deep learning. Your PhD student studies on applying Deep Learning onto Computer Vision, Medical Imaging, and Surgical Vision.\
      Below is a list of paper title from arxiv.\
-     Select 50 most interesting paper that you think will inspire your student in thier research. Please provide the numbers corresponding to the papers you selected, separated by commas. For example: \"1, 5, 10, 15, 20, 25, 30, 35, 40, 45\"";
+     Select ${MAX_PAPER_COUNT} most interesting paper that you think will inspire your student in thier research. Please provide the numbers corresponding to the papers you selected, separated by commas. For example: \"1, 5, 10, 15, 20, 25, 30, 35, 40, 45\"`;
 
 const PROMPT_PREFIX = `You are an expert in deep learning. Summarize the following \
  paper for a PhD student working on medical imaging. \
@@ -74,6 +77,7 @@ module.exports = {
     SUNARXIV_QUERY ,
     MAX_PAPER_COUNT,
     ARXIV_TERM,
+    CHANNEL,
     SELECTION_PREFIX,
     PROMPT_PREFIX,
     WEEKENDSELECTION_PREFIX,

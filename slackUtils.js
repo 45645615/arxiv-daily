@@ -1,6 +1,6 @@
 const axios = require("axios");
 const {callChatGPT} = require('./GPTutils');
-const { WEEKENDPROMPT_PREFIX, PROMPT_PREFIX, SLACK_TOKEN} = require('./template');
+const { WEEKENDPROMPT_PREFIX, PROMPT_PREFIX, SLACK_TOKEN, CHANNEL} = require('./template');
 
 
 function formatOutput(titleArray, authorNamesArray, summaries, arxivUrlArray, categories) {
@@ -14,6 +14,13 @@ function formatOutput(titleArray, authorNamesArray, summaries, arxivUrlArray, ca
     let cat = '';
     cat = categories.join(', ');
     
+    output += "\n\n\n\n\n" + `List of summarized title:\n`;
+
+    for (let i = 0; i < titleArray.length; i++) {
+      output += `${i+1}: ${titleArray[i]}\n`;
+    }
+
+
     output += "\n\n\n\n\n" + `Number of paper summarized today: [${summaries.length}]`;
     output += "\n\n\n\n\n" + `Categories fetched: [${cat}]`;
     output += "\n\n\n\n\n" + new Date() + "\n\n\n\n\n" + "===============================END OF MESSAGE===============================";
@@ -53,8 +60,7 @@ const options = {
     'Content-Type': 'application/json'
     },
     data: {
-    channel: '#daily-dose-of-arxiv',
-    //channel: '#arxiv-debug',
+    channel: CHANNEL,
     unfurl_links: false,
     unfurl_media: false,
     text: body

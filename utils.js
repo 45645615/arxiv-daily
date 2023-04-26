@@ -53,8 +53,9 @@ async function fetchPapers(dateRange, categories) {
       
       for (const entry of entries.entries) {
         const arxivUrl = entry.id;
-        const title = entry.title;
-        const authors = entry.author;
+        let title = entry.title;
+        title = title.replace(/\n/g, '');
+        let authors = entry.author;
         let authorNames = authors.length > 0
           ? authors.map(author => author.name).join(", ")
           : authors["name"];

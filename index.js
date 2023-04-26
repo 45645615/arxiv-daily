@@ -1,7 +1,7 @@
 const { getDateRange, getCategories, fetchPapers, deduplicateArrayWithIndices, extractScores, sortStringArrayByScore, removeElementsByIndices} = require('./utils');
 const { generateInputForSelection, callChatGPT, randomTokenLimit} = require('./GPTutils');
 const { formatOutput, generateSummaries, checkAndSendToSlack} = require('./slackUtils');
-const { OPENAI_API_KEY, SLACK_TOKEN, WEEKENDSELECTION_PREFIX, SELECTION_PREFIX} = require('./template');
+const { OPENAI_API_KEY, SLACK_TOKEN, MAX_PAPER_COUNT, WEEKENDSELECTION_PREFIX, SELECTION_PREFIX} = require('./template');
 
 async function main() {
   if (!OPENAI_API_KEY | !SLACK_TOKEN) {
@@ -65,6 +65,14 @@ async function main() {
     selectedAuthorNamesArray = sortStringArrayByScore(selectedAuthorNamesArray, scores);
     selectedTitleArray = sortStringArrayByScore(selectedTitleArray, scores);
     selectedArxivUrlArray = sortStringArrayByScore(selectedArxivUrlArray, scores);
+  }
+
+  // Hard cap to last MAX_PAPER_COUNT 
+  if (summaries.length > MAX_PAPER_COUNT){
+    summaries = summaries.slice(-MAX_PAPER_COUNT);
+    selectedAuthorNamesArray = selectedAuthorNamesArray.slice(-MAX_PAPER_COUNT);
+    selectedTitleArray = selectedTitleArray.slice(-MAX_PAPER_COUNT);
+    selectedArxivUrlArray = selectedArxivUrlArray.slice(-MAX_PAPER_COUNT);
   }
 
   // Format output for slack message
