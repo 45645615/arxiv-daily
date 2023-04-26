@@ -12,21 +12,22 @@ This repository contains the Dockerfile for building an Arxiv Paper Bot that fet
 git clone https://github.com/45645615/arxiv-daily.git
 cd arxiv-daily
 ```
+2. Set your channel name `CHANNEL` in `template.js`
 
-2. Set your OpenAI API key (GPT_TOKEN) and Slack API key (SLACK_TOKEN) as environment variables:
+3. Set your OpenAI API key (GPT_TOKEN) and Slack API key (SLACK_TOKEN) as environment variables:
 
 ```
 export GPT_TOKEN=your_openai_api_key
 export SLACK_TOKEN=your_slack_api_key
 ```
 
-3. Build the Docker image:
+4. Build the Docker image:
 
 ```
 docker build --build-arg GPT_TOKEN=$GPT_TOKEN --build-arg SLACK_TOKEN=$SLACK_TOKEN -t arxiv-daily .
 ```
 
-4. Run the Docker container:
+5. Run the Docker container:
 
 ```
 docker run -it --rm arxiv-daily
