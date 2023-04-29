@@ -106,19 +106,29 @@ async function sendMessage(text) {
 }
 
 async function sendThreadReply(channel, text, thread_ts) {
-  try {
-    await web.chat.postMessage({
-      channel: channel,
-      text: text,
-      thread_ts: thread_ts,
-      unfurl_links: false,
-      unfurl_media: false,
-    });
-  } catch (error) {
-    console.error('Error sending threaded reply:', error);
+  async function sendSlack(text) {
+    try {
+      await web.chat.postMessage({
+        channel: channel,
+        text: text,
+        thread_ts: thread_ts,
+        unfurl_links: false,
+        unfurl_media: false,
+      });
+    } catch (error) {
+      console.error('Error sending threaded reply:', error);
+    }
+  }
+
+  if (text.length > 35000) {
+    const chunks = splitIntoChunks(text, 35000);
+    for (let i = 0; i < chunks.length; i++) {
+      await sendSlack(chunks[i]);
+    }
+  } else {
+    await sendSlack(text);
   }
 }
-
 module.exports = {
     formatMainMsg,
     formatOutput,

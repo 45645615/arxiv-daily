@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { OPENAI_API_KEY, CATEGORIES_GROUPT_PREFIX} = require('./template');
+const { OPENAI_API_KEY, CATEGORIES_GROUPT_PREFIX, WEEKENDSELECTION_PREFIX, SELECTION_PREFIX} = require('./template');
 const {parseJsonFromResponse} = require('./utils');
 
 // Generate input string for selection by concatenating titles from the given title array
@@ -109,9 +109,44 @@ async function fetchAndParseResponse(input, MAX_RETRIES) {
   return responseObject;
 }
 
+async function fetchSelectedPaperIndices(isWeekend, titleArray, MAX_RETRIES) {
+  let attempts = 0;
+  let indexArray = null;
+
+  while (attempts < MAX_RETRIES) {
+    try {
+      let input = generateInputForSelection(titleArray);
+      console.log(input);
+
+      // Call the chatGPT API with the generated input to get selected paper list
+      const res = await callChatGPT([
+        {
+          role: "user",
+          content: isWeekend ? WEEKENDSELECTION_PREFIX + "\n" + input : SELECTION_PREFIX + "\n" + input,
+        },
+      ]);
+
+      // Extract the selected paper indices from chatGPT API response
+      const paragraphs = res.choices.map((c) => c.message.content.trim());
+      indexArray = paragraphs[0].match(/\d+/g).map(Number);
+      break;
+    } catch (error) {
+      console.error(`Attempt ${attempts + 1} failed:`, error);
+      attempts++;
+    }
+  }
+
+  if (!indexArray) {
+    console.error("All attempts failed, could not fetch selected paper indices");
+  }
+
+  return indexArray;
+}
+
 module.exports = {
     generateInputForSelection,
     callChatGPT,
     randomTokenLimit,
-    fetchAndParseResponse
+    fetchAndParseResponse,
+    fetchSelectedPaperIndices
   };

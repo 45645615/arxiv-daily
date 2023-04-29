@@ -1,5 +1,5 @@
-const { getDateRange, getCategories, fetchPapers, deduplicateArrayWithIndices, extractScores, sortStringArrayByScore, removeElementsByIndices} = require('./utils');
-const { generateInputForSelection, callChatGPT, randomTokenLimit, fetchAndParseResponse} = require('./GPTutils');
+const { getDateRange, getCategories, fetchPapers, deduplicateArrayWithIndices, extractScores, sortStringArrayByScore, removeElementsByIndices, formatDate} = require('./utils');
+const { generateInputForSelection, callChatGPT, randomTokenLimit, fetchAndParseResponse, fetchSelectedPaperIndices} = require('./GPTutils');
 const { formatMainMsg, formatOutput, generateSummaries, checkAndSendToSlack, sendMessage, sendThreadReply} = require('./slackUtils');
 const { OPENAI_API_KEY, SLACK_TOKEN, MAX_PAPER_COUNT, WEEKENDSELECTION_PREFIX, SELECTION_PREFIX, CATEGORIES_GROUPT_PREFIX} = require('./template');
 
@@ -35,27 +35,14 @@ async function main() {
   arxivUrlArray = removeElementsByIndices(arxivUrlArray, tokenLimitResult.removedIndices);
 
   // Generate input for chatGPT based selection
-  let input = generateInputForSelection(titleArray);
-  console.log(input);
+  const indexArray = await fetchSelectedPaperIndices(isWeekend, titleArray, 30);
 
-  // Call the chatGPT API with the generated input to get selected paper list
-  const res = await callChatGPT([
-    {
-      role: "user",
-      content: isWeekend ? WEEKENDSELECTION_PREFIX + "\n" + input : SELECTION_PREFIX + "\n" + input,
-    },
-  ]);
-
-  // Extract the selected paper indices from chatGPT API response
-  const paragraphs = res.choices.map((c) => c.message.content.trim());
-  const indexArray = paragraphs[0].match(/\d+/g).map(Number);
-  console.log(paragraphs)
   let selectedAuthorNamesArray = indexArray.map(index => authorNamesArray[index]);
   let selectedTitleArray = indexArray.map(index => titleArray[index]);
   let selectedArxivUrlArray = indexArray.map(index => arxivUrlArray[index]);
   let selectedAbstractArray = indexArray.map(index => abstractArray[index]);
 
-  await sendMessage("===============================BEGINNING OF MESSAGE===============================\n\n" + new Date());
+  await sendMessage("==============================="+formatDate((new Date()))+"===============================\n\n");
 
   if (isWeekend){
     let summaries = await generateSummaries(isWeekend, selectedTitleArray, selectedAbstractArray);
@@ -67,8 +54,10 @@ async function main() {
   }
   else {
     // Put title into different categories
+    console.log(selectedTitleArray);
     input = generateInputForSelection(selectedTitleArray);
-    const responseObject = await fetchAndParseResponse(input, 10);
+    const responseObject = await fetchAndParseResponse(input, 30);
+    console.log(responseObject);
     for (const category in responseObject) {
       let indexA = responseObject[category];
       indexA = indexA.filter(index => index >= 0 && index < selectedAuthorNamesArray.length)
@@ -88,7 +77,7 @@ async function main() {
   }
   let cat = '';
   cat = categories.join(', ');
-  let end_msg = `Categories fetched: [${cat}]` + "\n" + new Date() +"\n\n" + "==================================END OF MESSAGE===================================" ;
+  let end_msg = `Categories fetched: [${cat}]` + "\n" + "==============================="+ formatDate(new Date())+"===============================";
   await sendMessage(end_msg);
 
 }

@@ -171,6 +171,15 @@ function parseJsonFromResponse(response) {
   // Parse the JSON string and return the JavaScript object
   return JSON.parse(jsonString);
 }
+
+function formatDate(date) {
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+}
+
 module.exports = {
     getDateRange,
     getCategories,
@@ -179,5 +188,6 @@ module.exports = {
     extractScores,
     sortStringArrayByScore,
     removeElementsByIndices,
-    parseJsonFromResponse
+    parseJsonFromResponse,
+    formatDate
   };
