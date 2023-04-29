@@ -1,30 +1,26 @@
 const axios = require("axios");
+const { WebClient } = require('@slack/web-api');
 const {callChatGPT} = require('./GPTutils');
 const { WEEKENDPROMPT_PREFIX, PROMPT_PREFIX, SLACK_TOKEN, CHANNEL} = require('./template');
+const web = new WebClient(SLACK_TOKEN);
 
+function formatMainMsg(category, categoryTitleArray) {
+  let output = "\n\n{ " + category + " }\n\n";
+  
+  // Iterate through the summaries and append each paper's information to the output
+  for (let i = 0; i < categoryTitleArray.length; i++) {
+    output += `${i+1}: ${categoryTitleArray[i]}\n`;
+  }
+  return output.trim();
+}
 
 function formatOutput(titleArray, authorNamesArray, summaries, arxivUrlArray, categories) {
-    let output = "===============================BEGINNING OF MESSAGE===============================\n\n\n\n\n" + new Date() + " \n\n\n\n\n";
+    let output = "";
     
     // Iterate through the summaries and append each paper's information to the output
-    for (let i = 0; i < summaries.length; i++) {
+    for (let i = 0; i < titleArray.length; i++) {
       output += `Paper ${i+1}\nTitle: ${titleArray[i]}\nAuthors: ${authorNamesArray[i]}\n\n${summaries[i]}\n\n${arxivUrlArray[i]}\n------------------------\n\n\n`;
     }
-  
-    let cat = '';
-    cat = categories.join(', ');
-    
-    output += "\n\n\n\n\n" + `List of summarized title:\n`;
-
-    for (let i = 0; i < titleArray.length; i++) {
-      output += `${i+1}: ${titleArray[i]}\n`;
-    }
-
-
-    output += "\n\n\n\n\n" + `Number of paper summarized today: [${summaries.length}]`;
-    output += "\n\n\n\n\n" + `Categories fetched: [${cat}]`;
-    output += "\n\n\n\n\n" + new Date() + "\n\n\n\n\n" + "===============================END OF MESSAGE===============================";
-  
     return output.trim();
   }
   
@@ -94,8 +90,40 @@ async function checkAndSendToSlack(str) {
   }
 }
 
+async function sendMessage(text) {
+  try {
+    const result = await web.chat.postMessage({
+      channel: CHANNEL,
+      text: text,
+      unfurl_links: false,
+      unfurl_media: false,
+    });
+
+    return { ts: result.ts, channel: result.channel };
+  } catch (error) {
+    console.error('Error sending message:', error);
+  }
+}
+
+async function sendThreadReply(channel, text, thread_ts) {
+  try {
+    await web.chat.postMessage({
+      channel: channel,
+      text: text,
+      thread_ts: thread_ts,
+      unfurl_links: false,
+      unfurl_media: false,
+    });
+  } catch (error) {
+    console.error('Error sending threaded reply:', error);
+  }
+}
+
 module.exports = {
+    formatMainMsg,
     formatOutput,
     generateSummaries,
     checkAndSendToSlack,
+    sendMessage,
+    sendThreadReply
   };

@@ -10,8 +10,8 @@ const SUNARXIV_QUERY = ["cat:econ.*", "cat:q-fin.*"];
 const MAX_PAPER_COUNT = 50;
 const ARXIV_TERM = 1;
 
-const CHANNEL = '#daily-dose-of-arxiv'
-// const CHANNEL = '#arxiv-debug'
+// const CHANNEL = '#daily-dose-of-arxiv'
+const CHANNEL = '#arxiv-debug'
 
 const SELECTION_PREFIX = `You are an expert in deep learning. Your PhD student studies on applying Deep Learning onto Computer Vision, Medical Imaging, and Surgical Vision.\
      Below is a list of paper title from arxiv.\
@@ -69,6 +69,21 @@ Applications:
 - Understanding the statistical vs. computational tradeoff could be relevant for developing more efficient algorithms for graph analysis.
 - The study of latent space models could have implications for modeling certain types of data in deep learning, such as generating synthetic data for training neural networks.`
 
+CATEGORIES_GROUPT_PREFIX = `Below are title of deep learning paper from arxiv, group them into categories based on their similarity, in format of {category name: paper number}, you can use different category name than example. For example:
+{
+  "Agriculture & Remote Sensing": [0],
+  "Bias & Fairness": [1, 43],
+  "Self-supervised Learning": [2, 6, 16, 29],
+  "Image Segmentation & Parsing": [3, 8, 22, 33, 35, 36, 40, 44],
+  "Medical Imaging": [9, 10, 21, 28, 32, 34, 42],
+  "Control & Robotics": [5, 11],
+  "Image Generation & Manipulation": [12, 14, 17, 19, 26, 31, 37, 41],
+  "Vision & Recognition": [7, 13, 18, 23, 27, 38, 39],
+  "Information Extraction & Retrieval": [24, 30, 49, 50],
+  "Adversarial Learning & Explainability": [4, 15, 20, 25, 45, 46, 47, 48]
+  }:`
+
+
 module.exports = {
     OPENAI_API_KEY,
     SLACK_TOKEN,
@@ -81,5 +96,6 @@ module.exports = {
     SELECTION_PREFIX,
     PROMPT_PREFIX,
     WEEKENDSELECTION_PREFIX,
-    WEEKENDPROMPT_PREFIX
+    WEEKENDPROMPT_PREFIX,
+    CATEGORIES_GROUPT_PREFIX
   };

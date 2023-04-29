@@ -1,5 +1,6 @@
 const axios = require("axios");
-const { OPENAI_API_KEY} = require('./template');
+const { OPENAI_API_KEY, CATEGORIES_GROUPT_PREFIX} = require('./template');
+const {parseJsonFromResponse} = require('./utils');
 
 // Generate input string for selection by concatenating titles from the given title array
 function generateInputForSelection(titleArray) {
@@ -79,10 +80,38 @@ function randomTokenLimit(titleArray, maxTokens = 4000) {
     return { newArray, removedIndices };
   }
 
-  
+async function fetchAndParseResponse(input, MAX_RETRIES) {
+  let attempts = 0;
+  let responseObject = null;
+
+  while (attempts < MAX_RETRIES) {
+    try {
+      const res2 = await callChatGPT([
+        {
+          role: "user",
+          content: CATEGORIES_GROUPT_PREFIX + "\n" + input,
+        },
+      ]);
+      const paragraphs2 = res2.choices.map((c) => c.message.content.trim());
+      console.log(paragraphs2[0]);
+      responseObject = parseJsonFromResponse(paragraphs2[0]);
+      break;
+    } catch (error) {
+      console.error(`Attempt ${attempts + 1} failed:`, error);
+      attempts++;
+    }
+  }
+
+  if (!responseObject) {
+    console.error("All attempts failed, could not fetch and parse the response");
+  }
+
+  return responseObject;
+}
 
 module.exports = {
     generateInputForSelection,
     callChatGPT,
-    randomTokenLimit
+    randomTokenLimit,
+    fetchAndParseResponse
   };

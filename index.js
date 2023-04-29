@@ -1,7 +1,7 @@
 const { getDateRange, getCategories, fetchPapers, deduplicateArrayWithIndices, extractScores, sortStringArrayByScore, removeElementsByIndices} = require('./utils');
-const { generateInputForSelection, callChatGPT, randomTokenLimit} = require('./GPTutils');
-const { formatOutput, generateSummaries, checkAndSendToSlack} = require('./slackUtils');
-const { OPENAI_API_KEY, SLACK_TOKEN, MAX_PAPER_COUNT, WEEKENDSELECTION_PREFIX, SELECTION_PREFIX} = require('./template');
+const { generateInputForSelection, callChatGPT, randomTokenLimit, fetchAndParseResponse} = require('./GPTutils');
+const { formatMainMsg, formatOutput, generateSummaries, checkAndSendToSlack, sendMessage, sendThreadReply} = require('./slackUtils');
+const { OPENAI_API_KEY, SLACK_TOKEN, MAX_PAPER_COUNT, WEEKENDSELECTION_PREFIX, SELECTION_PREFIX, CATEGORIES_GROUPT_PREFIX} = require('./template');
 
 async function main() {
   if (!OPENAI_API_KEY | !SLACK_TOKEN) {
@@ -55,33 +55,42 @@ async function main() {
   let selectedArxivUrlArray = indexArray.map(index => arxivUrlArray[index]);
   let selectedAbstractArray = indexArray.map(index => abstractArray[index]);
 
-  // Generate summaries for the selected papers
-  let summaries = await generateSummaries(isWeekend, selectedTitleArray, selectedAbstractArray);
+  await sendMessage("===============================BEGINNING OF MESSAGE===============================\n\n" + new Date());
 
-  // If it's not a weekend, sort the summaries and other arrays by scores
-  if (!isWeekend) {
-    const scores = extractScores(summaries);
-    summaries = sortStringArrayByScore(summaries, scores);
-    selectedAuthorNamesArray = sortStringArrayByScore(selectedAuthorNamesArray, scores);
-    selectedTitleArray = sortStringArrayByScore(selectedTitleArray, scores);
-    selectedArxivUrlArray = sortStringArrayByScore(selectedArxivUrlArray, scores);
+  if (isWeekend){
+    let summaries = await generateSummaries(isWeekend, selectedTitleArray, selectedAbstractArray);
+    category_msg = dayOfWeek === 6 ? "Maths and Stats" : "Economics and Q-Fin"
+    let main_msg = formatMainMsg(category_msg, selectedTitleArray)
+    const mainMessage = await sendMessage(main_msg);
+    let output = formatOutput( selectedTitleArray, selectedAuthorNamesArray, summaries, selectedArxivUrlArray, categories);
+    await sendThreadReply(mainMessage.channel, output, mainMessage.ts);
   }
+  else {
+    // Put title into different categories
+    input = generateInputForSelection(selectedTitleArray);
+    const responseObject = await fetchAndParseResponse(input, 10);
+    for (const category in responseObject) {
+      let indexA = responseObject[category];
+      indexA = indexA.filter(index => index >= 0 && index < selectedAuthorNamesArray.length)
 
-  // Hard cap to last MAX_PAPER_COUNT 
-  if (summaries.length > MAX_PAPER_COUNT){
-    summaries = summaries.slice(-MAX_PAPER_COUNT);
-    selectedAuthorNamesArray = selectedAuthorNamesArray.slice(-MAX_PAPER_COUNT);
-    selectedTitleArray = selectedTitleArray.slice(-MAX_PAPER_COUNT);
-    selectedArxivUrlArray = selectedArxivUrlArray.slice(-MAX_PAPER_COUNT);
+      let categoryAuthorNamesArray = indexA.map(index => selectedAuthorNamesArray[index]);
+      let categoryTitleArray = indexA.map(index => selectedTitleArray[index]);
+      let categoryArxivUrlArray = indexA.map(index => selectedArxivUrlArray[index]);
+      let categoryAbstractArray = indexA.map(index => selectedAbstractArray[index]);
+
+      // Generate summaries for the selected papers
+      let summaries = await generateSummaries(isWeekend, categoryTitleArray, categoryAbstractArray);
+      let main_msg = formatMainMsg(category, categoryTitleArray)
+      const mainMessage = await sendMessage(main_msg);
+      let output = formatOutput( categoryTitleArray, categoryAuthorNamesArray, summaries, categoryArxivUrlArray, categories);
+      await sendThreadReply(mainMessage.channel, output, mainMessage.ts);
+    }
   }
+  let cat = '';
+  cat = categories.join(', ');
+  let end_msg = `Categories fetched: [${cat}]` + "\n" + new Date() +"\n\n" + "==================================END OF MESSAGE===================================" ;
+  await sendMessage(end_msg);
 
-  // Format output for slack message
-  output += formatOutput( selectedTitleArray, selectedAuthorNamesArray, summaries, selectedArxivUrlArray, categories);
-  output = output.trim();
-  console.log(output);
-  console.log(output.length);
-
-  await checkAndSendToSlack(output);
 }
 
 main().catch(error => console.error(error));

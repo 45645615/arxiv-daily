@@ -160,6 +160,17 @@ function sortStringArrayByScore(stringArray, scoreArray) {
 function removeElementsByIndices(array, indices) {
 return array.filter((_, index) => !indices.includes(index));
 }
+
+function parseJsonFromResponse(response) {
+  // Regular expression to match a JSON object
+  const jsonRegex = /{[\s\S]*}/;
+
+  // Extract the JSON string from the response using the regex
+  const jsonString = response.match(jsonRegex)[0];
+
+  // Parse the JSON string and return the JavaScript object
+  return JSON.parse(jsonString);
+}
 module.exports = {
     getDateRange,
     getCategories,
@@ -167,5 +178,6 @@ module.exports = {
     deduplicateArrayWithIndices,
     extractScores,
     sortStringArrayByScore,
-    removeElementsByIndices
+    removeElementsByIndices,
+    parseJsonFromResponse
   };
