@@ -20,27 +20,25 @@ const SELECTION_PREFIX = `You are an expert in deep learning. Your PhD student s
 const PROMPT_PREFIX = `You are an expert in deep learning. Summarize the following \
  paper for a PhD student working on medical imaging. \
  Provide a sectence no more than 10 words discribing the main purpose of the paper in TLDR. \
- Provide 3-7 key bullet points with each no more than 20 words in Summary, also provide relevance score in the format of {x/10}, a brief reason for \
+ Provide 3-4 key bullet points with each no more than 20 words in Summary, also provide relevance score in the format of {x/10}, a brief reason for \
  the score, and 1-2 specific applications related to the audience's \
  research interest (e.g., diagnostics, treatment planning, medical imaging). \
  Keep it simple and concise, you can replace words with vocabulary easier to \
  understand when necessary. For example: 
 
  TLDR:
-- This paper introduces a new approach to regularize deep neural networks using phantom embeddings.
+- MedSAM extends SAM to medical image segmentation.
 
  Summary:
-- Deep neural networks tend to memorize training data, leading to poor performance on test data.
-- Existing regularization techniques such as L1, L2, and dropout have limitations and require hyperparameter tuning.
-- This paper proposes using phantom embeddings from a subset of homogenous samples to reduce inter-class similarity in the latent embedding space.
-- The resulting models generalize better and require less hyperparameter tuning.
-- The method is evaluated on CIFAR and FashionMNIST datasets, outperforming standard baselines.
+- Created 200,000+ medical masks dataset (11 modalities)
+- Adapted SAM for medical image segmentation
+- MedSAM surpassed default SAM in 3D/2D tasks
+- Publicly available code and trained model
 
-Relevance score: 8/10. Regularization is a fundamental technique in deep learning and is particularly relevant to medical imaging applications, where overfitting can lead to misdiagnosis or inaccurate treatment planning. The paper's proposed approach could potentially improve the accuracy of deep learning models in medical imaging.
-
+Relevance score: 9/10. Adapting SAM to medical imaging is highly relevant, as it can improve segmentation performance, which is crucial in diagnostics and treatment planning.
 Applications:
-- Improving the accuracy of deep learning models for medical image classification and segmentation.
-- Improving the performance of deep learning models for medical image registration and reconstruction.`;
+- Enhancing diagnostic accuracy through better segmentation.
+- Improving treatment planning with precise image segmentation.`;
 
 const WEEKENDSELECTION_PREFIX = `You are an expert in deep learning.\
      Below is a list of paper title from topics of Mathematics, Statistics and Economics. \
