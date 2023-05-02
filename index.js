@@ -18,14 +18,15 @@ async function main() {
   let categories = getCategories(dayOfWeek);
 
   // Fetch papers based on the date range and categories  
-  let { titleArray, authorNamesArray, arxivUrlArray, abstractArray } = await fetchPapers(dateRange, categories);
-
+  let { titleArray, authorNamesArray, arxivUrlArray, abstractArray, commentArray } = await fetchPapers(dateRange, categories);
+  
   // Deduplicate the fetched papers
   const dedupResult = deduplicateArrayWithIndices(arxivUrlArray);
   arxivUrlArray = dedupResult.deduplicatedArray;
   titleArray = removeElementsByIndices(titleArray, dedupResult.duplicatedIndices);
   authorNamesArray = removeElementsByIndices(authorNamesArray, dedupResult.duplicatedIndices);
   abstractArray = removeElementsByIndices(abstractArray, dedupResult.duplicatedIndices);
+  commentArray = removeElementsByIndices(commentArray, dedupResult.duplicatedIndices);
 
   // Limit the number of tokens
   const tokenLimitResult = randomTokenLimit(titleArray, 16500);
@@ -33,6 +34,7 @@ async function main() {
   authorNamesArray = removeElementsByIndices(authorNamesArray, tokenLimitResult.removedIndices);
   abstractArray = removeElementsByIndices(abstractArray, tokenLimitResult.removedIndices);
   arxivUrlArray = removeElementsByIndices(arxivUrlArray, tokenLimitResult.removedIndices);
+  commentArray = removeElementsByIndices(commentArray, tokenLimitResult.removedIndices);
 
   // Generate input for chatGPT based selection
   const indexArray = await fetchSelectedPaperIndices(isWeekend, titleArray, 30);
@@ -41,6 +43,7 @@ async function main() {
   let selectedTitleArray = indexArray.map(index => titleArray[index]);
   let selectedArxivUrlArray = indexArray.map(index => arxivUrlArray[index]);
   let selectedAbstractArray = indexArray.map(index => abstractArray[index]);
+  let selectedCommentArray = indexArray.map(index => commentArray[index]);
 
   await sendMessage("==============================="+formatDate((new Date()))+"===============================\n\n");
 
@@ -66,12 +69,13 @@ async function main() {
       let categoryTitleArray = indexA.map(index => selectedTitleArray[index]);
       let categoryArxivUrlArray = indexA.map(index => selectedArxivUrlArray[index]);
       let categoryAbstractArray = indexA.map(index => selectedAbstractArray[index]);
-
+      let categoryCommentArray = indexA.map(index => selectedCommentArray[index]);
+      
       // Generate summaries for the selected papers
       let summaries = await generateSummaries(isWeekend, categoryTitleArray, categoryAbstractArray);
       let main_msg = formatMainMsg(category, categoryTitleArray)
       const mainMessage = await sendMessage(main_msg);
-      let output = formatOutput( categoryTitleArray, categoryAuthorNamesArray, summaries, categoryArxivUrlArray, categories);
+      let output = formatOutput( categoryTitleArray, categoryAuthorNamesArray, summaries, categoryArxivUrlArray, categories, categoryCommentArray);
       await sendThreadReply(mainMessage.channel, output, mainMessage.ts);
     }
   }

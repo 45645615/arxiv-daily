@@ -47,6 +47,7 @@ async function fetchPapers(dateRange, categories) {
     let titleArray = [];
     let arxivUrlArray = [];
     let abstractArray = [];
+    let commentArray = [];
     // Iterate through categories and fetch entries
     for (const category of categories) {
       const entries = await getEntriesOn(dateRange, category);
@@ -60,11 +61,13 @@ async function fetchPapers(dateRange, categories) {
           ? authors.map(author => author.name).join(", ")
           : authors["name"];
         const summary = entry.summary;
-  
+        const comment = entry['arxiv:comment'];
+
         titleArray.push(title);
         authorNamesArray.push(authorNames);
         arxivUrlArray.push(arxivUrl);
         abstractArray.push(summary);
+        commentArray.push(comment);
       }
     }
   
@@ -73,6 +76,7 @@ async function fetchPapers(dateRange, categories) {
       titleArray,
       arxivUrlArray,
       abstractArray,
+      commentArray,
     };
   }
 

@@ -17,28 +17,29 @@ const SELECTION_PREFIX = `You are an expert in deep learning. Your PhD student s
      Below is a list of paper title from arxiv.\
      Select ${MAX_PAPER_COUNT} most interesting paper that you think will inspire your student in thier research. Please provide the numbers corresponding to the papers you selected, separated by commas. For example: \"Title index, Title index, Title index, Title index, Title index, Title index, Title index, Title index, Title index, Title index\"`;
 
-const PROMPT_PREFIX = `You are an expert in deep learning. Summarize the following \
- paper for a PhD student working on medical imaging. \
- Provide a sectence no more than 10 words discribing the main purpose of the paper in TLDR. \
- Provide 3-4 key bullet points with each no more than 20 words in Summary, also provide relevance score in the format of {x/10}, a brief reason for \
- the score, and 1-2 specific applications related to the audience's \
- research interest (e.g., diagnostics, treatment planning, medical imaging). \
- Keep it simple and concise, you can replace words with vocabulary easier to \
+const PROMPT_PREFIX = `You are an expert in deep learning. Summarize the following 
+ paper for a PhD student working on medical imaging. 
+ Provide a sectence no more than 10 words discribing the main purpose of the paper in TLDR. 
+ Provide 3-4 key bullet points with each no more than 20 words in Summary, also provide relevance score in the format of {x/10}, a brief reason for 
+ the score, and 1-2 specific applications related to the audience's 
+ research interest (e.g., diagnostics, treatment planning, medical imaging). 
+ Keep it simple and concise, you can replace words with vocabulary easier to 
  understand when necessary. For example: 
 
  TLDR:
-- MedSAM extends SAM to medical image segmentation.
+- Enhanced skin lesion segmentation using edge-body fusion.
 
  Summary:
-- Created 200,000+ medical masks dataset (11 modalities)
-- Adapted SAM for medical image segmentation
-- MedSAM surpassed default SAM in 3D/2D tasks
-- Publicly available code and trained model
+- Separate branches for edge and body segmentation.
+- Local cross-attention fusion (LCAF) module for feature fusion.
+- Prior-guided multi-scale fusion (PGMF) module for integration.
 
-Relevance score: 9/10. Adapting SAM to medical imaging is highly relevant, as it can improve segmentation performance, which is crucial in diagnostics and treatment planning.
+Relevance score: 8/10 
+Reason: Novel fusion techniques for accurate skin lesion segmentation.
+
 Applications:
-- Enhancing diagnostic accuracy through better segmentation.
-- Improving treatment planning with precise image segmentation.`;
+- Improved skin cancer diagnosis in medical imaging.
+- Enhanced treatment planning based on precise lesion boundaries.`;
 
 const WEEKENDSELECTION_PREFIX = `You are an expert in deep learning.\
      Below is a list of paper title from topics of Mathematics, Statistics and Economics. \
@@ -67,7 +68,7 @@ Applications:
 - Understanding the statistical vs. computational tradeoff could be relevant for developing more efficient algorithms for graph analysis.
 - The study of latent space models could have implications for modeling certain types of data in deep learning, such as generating synthetic data for training neural networks.`
 
-CATEGORIES_GROUPT_PREFIX = `Below are titles of deep learning paper from arxiv, group them into categories based on their similarity, in format of {category name: paper number}, you can use different category name than example, avoid groups with only single element. For example:
+CATEGORIES_GROUPT_PREFIX = `You are an expert in deep learning. Below are titles of deep learning paper from arxiv, group them into categories based on their similarity, in format of {category name: paper number}, you can use different category name than example, avoid groups with only single element. For example:
 {
   "Medical Imaging": [Title indices],
   "Category Name": [Title indices],
