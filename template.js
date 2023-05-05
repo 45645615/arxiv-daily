@@ -13,7 +13,7 @@ const ARXIV_TERM = 1;
 // const CHANNEL = '#daily-dose-of-arxiv'
 const CHANNEL = '#arxiv-debug'
 
-const SELECTION_PREFIX = `You are an expert in deep learning. Your PhD student studies on applying Deep Learning onto Computer Vision, Medical Imaging, and Surgical Vision.\
+const SELECTION_PREFIX = `You are an expert in deep learning. Your PhD student studies on applying Deep Learning onto Computer Vision, Medical Imaging, and Multimodal learning.\
      Below is a list of paper title from arxiv.\
      Select ${MAX_PAPER_COUNT} most interesting paper that you think will inspire your student in thier research. Please provide the numbers corresponding to the papers you selected, separated by commas. For example: \"Title index, Title index, Title index, Title index, Title index, Title index, Title index, Title index, Title index, Title index\"`;
 
