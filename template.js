@@ -39,7 +39,7 @@ Applications:
 - Enhanced treatment planning based on precise lesion boundaries.`;
 
 const WEEKENDSELECTION_PREFIX = `You are an expert in deep learning. Below is a list of paper titles from the topics of Mathematics, Statistics, Economics, and Q-Fin.
-Select the 10 most interesting papers that you think will inspire your student in their research. Please provide the numbers corresponding to the papers you selected, separated by commas. For example: \"Title index, Title index, Title index, Title index, Title index, Title index, Title index, Title index, Title index, Title index"`;
+Select the 2 most interesting papers that you think will inspire your student in their research. Please provide the numbers corresponding to the papers you selected, separated by commas. For example: \"Title index, Title index, Title index, Title index, Title index, Title index, Title index, Title index, Title index, Title index"`;
 
 const WEEKENDPROMPT_PREFIX = `You are an expert in deep learning and Mathematics. Your audience is a PhD student working on deep learning. 
  Please provide a TLDR sentence (no more than 10 words) describing the main purpose of the paper in TLDR.

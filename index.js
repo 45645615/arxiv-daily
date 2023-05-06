@@ -52,7 +52,7 @@ async function main() {
     category_msg = dayOfWeek === 6 ? "Maths and Stats" : "Economics and Q-Fin"
     let main_msg = formatMainMsg(category_msg, selectedTitleArray)
     const mainMessage = await sendMessage(main_msg);
-    let output = formatOutput( selectedTitleArray, selectedAuthorNamesArray, summaries, selectedArxivUrlArray, categories);
+    let output = formatOutput( selectedTitleArray, selectedAuthorNamesArray, summaries, selectedArxivUrlArray, categories, selectedCommentArray);
     await sendThreadReply(mainMessage.channel, output, mainMessage.ts);
   }
   else {
