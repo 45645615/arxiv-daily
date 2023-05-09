@@ -19,7 +19,7 @@ const SELECTION_PREFIX = `You are an expert in deep learning. Your PhD student i
 const PROMPT_PREFIX = `You are an expert in deep learning. Summarize the following paper for a PhD student working on medical imaging.
  Provide a sentence, no more than 10 words, describing the main purpose of the paper in TLDR. 
  Provide 3-4 key bullet points, with each no more than 20 words, in Summary. 
- Also, provide a relevance score in the format of {x/10}, a brief reason for the score, and 1-2 specific applications related to the PhD student's research interest (e.g., diagnostics, treatment planning, medical imaging).
+ Also, provide a relevance score in the format of <x/10>, a brief reason for the score, and 1-2 specific applications related to the PhD student's research interest (e.g., diagnostics, treatment planning, medical imaging).
  Keep it simple and concise. Replace words with easier-to-understand vocabulary when necessary.
  For example: 
 
@@ -39,7 +39,7 @@ Applications:
 - Enhanced treatment planning based on precise lesion boundaries.`;
 
 const WEEKENDSELECTION_PREFIX = `You are an expert in deep learning. Below is a list of paper titles from the topics of Mathematics, Statistics, Economics, and Q-Fin.
-Select the 2 most interesting papers that you think will inspire your student in their research. Please provide the numbers corresponding to the papers you selected, separated by commas. For example: \"Title index, Title index, Title index, Title index, Title index, Title index, Title index, Title index, Title index, Title index"`;
+Select the 10 most interesting papers that you think will inspire your student in their research. Please provide the numbers corresponding to the papers you selected, separated by commas. For example: \"Title index, Title index, Title index, Title index, Title index, Title index, Title index, Title index, Title index, Title index"`;
 
 const WEEKENDPROMPT_PREFIX = `You are an expert in deep learning and Mathematics. Your audience is a PhD student working on deep learning. 
  Please provide a TLDR sentence (no more than 10 words) describing the main purpose of the paper in TLDR.
@@ -61,7 +61,7 @@ Applications:
 - Enhance generative models by incorporating hyperbolic geometry and moduli spaces.
 - Develop novel optimization algorithms inspired by handlebody mapping class groups.`
 
-CATEGORIES_GROUPT_PREFIX = `You are an expert in deep learning. Below are the titles of deep learning papers from the arXiv. Group them into categories based on their similarity, using the format {category name: paper number}. You can use different category names than the example. If possible, avoid groups with only a single element. For example:
+CATEGORIES_GROUPT_PREFIX = `You are an expert in deep learning. Below are the titles of deep learning papers from the arXiv. Group them into categories based on their similarity, using the format <category name: paper number>. You can use different category names than the example. If possible, avoid groups with only a single element. For example:
 {
   "Medical Imaging": [Title indices],
   "Category Name": [Title indices],

@@ -61,10 +61,11 @@ async function main() {
     input = generateInputForSelection(selectedTitleArray);
     const responseObject = await fetchAndParseResponse(input, 30);
     console.log(responseObject);
+    categoriedIndex = [];
     for (const category in responseObject) {
       let indexA = responseObject[category];
       indexA = indexA.filter(index => index >= 0 && index < selectedAuthorNamesArray.length)
-
+      Array.prototype.push.apply(categoriedIndex, indexA);
       let categoryAuthorNamesArray = indexA.map(index => selectedAuthorNamesArray[index]);
       let categoryTitleArray = indexA.map(index => selectedTitleArray[index]);
       let categoryArxivUrlArray = indexA.map(index => selectedArxivUrlArray[index]);
@@ -78,6 +79,27 @@ async function main() {
       let output = formatOutput( categoryTitleArray, categoryAuthorNamesArray, summaries, categoryArxivUrlArray, categories, categoryCommentArray);
       await sendThreadReply(mainMessage.channel, output, mainMessage.ts);
     }
+    // Find missing elements in the new array
+    const missingElements = [];
+    for (let i = 0; i < selectedTitleArray.length; i++) {
+      if (!categoriedIndex.includes(i)) {
+        missingElements.push(i);
+      }
+    }
+    if (missingElements.length > 0){
+      const category = "Miscellaneous"
+      let categoryAuthorNamesArray = missingElements.map(index => selectedAuthorNamesArray[index]);
+      let categoryTitleArray = missingElements.map(index => selectedTitleArray[index]);
+      let categoryArxivUrlArray = missingElements.map(index => selectedArxivUrlArray[index]);
+      let categoryAbstractArray = missingElements.map(index => selectedAbstractArray[index]);
+      let categoryCommentArray = missingElements.map(index => selectedCommentArray[index]);
+      let summaries = await generateSummaries(isWeekend, categoryTitleArray, categoryAbstractArray);
+      let main_msg = formatMainMsg(category, categoryTitleArray)
+      const mainMessage = await sendMessage(main_msg);
+      let output = formatOutput( categoryTitleArray, categoryAuthorNamesArray, summaries, categoryArxivUrlArray, categories, categoryCommentArray);
+      await sendThreadReply(mainMessage.channel, output, mainMessage.ts);
+    }
+
   }
   let cat = '';
   cat = categories.join(', ');
