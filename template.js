@@ -61,7 +61,7 @@ Applications:
 - Enhance generative models by incorporating hyperbolic geometry and moduli spaces.
 - Develop novel optimization algorithms inspired by handlebody mapping class groups.`
 
-CATEGORIES_GROUPT_PREFIX = `You are an expert in deep learning. Below are the titles of deep learning papers from the arXiv. Group them into categories based on their similarity, using the format <category name: paper number>. You can use different category names than the example. If possible, avoid groups with only a single element. For example:
+CATEGORIES_GROUPT_PREFIX = `You are an expert in deep learning. Below are the titles of deep learning papers from the arXiv. Group them into categories based on their similarity, using the format {category name: paper number}. You can use different category names than the example. If possible, avoid groups with only a single element. For example:
 {
   "Medical Imaging": [Title indices],
   "Category Name": [Title indices],
