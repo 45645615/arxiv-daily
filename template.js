@@ -11,7 +11,7 @@ const MAX_PAPER_COUNT = 50;
 const ARXIV_TERM = 1;
 
 // const CHANNEL = '#daily-dose-of-arxiv'
-const CHANNEL = '#arxiv-debug'
+const CHANNEL = "#arxiv-debug";
 
 const SELECTION_PREFIX = `You are an expert in deep learning. Your PhD student is working on applying Deep Learning to Computer Vision, Medical Imaging, and Multimodal learning. Below is a list of paper titles from arXiv.
      Select the ${MAX_PAPER_COUNT} most interesting papers that you think will inspire your student in their research. Please provide the numbers corresponding to the papers you selected, separated by commas. For example: \"Title index, Title index, Title index, Title index, Title index, Title index, Title index, Title index, Title index, Title index\"`;
@@ -19,7 +19,7 @@ const SELECTION_PREFIX = `You are an expert in deep learning. Your PhD student i
 const PROMPT_PREFIX = `You are an expert in deep learning. Summarize the following paper for a PhD student working on medical imaging.
  Provide a sentence, no more than 10 words, describing the main purpose of the paper in TLDR. 
  Provide 3-4 key bullet points, with each no more than 20 words, in Summary. 
- Also, provide a relevance score in the format of <x/10>, a brief reason for the score, and 1-2 specific applications related to the PhD student's research interest (e.g., diagnostics, treatment planning, medical imaging).
+ Also, provide a relevance score in the format of <x/10>, a brief reason for the score, and 1-2 niche applications on diagnostics and medical imaging but have not been attempted by existing literature.
  Keep it simple and concise. Replace words with easier-to-understand vocabulary when necessary.
  For example: 
 
@@ -59,35 +59,34 @@ const WEEKENDPROMPT_PREFIX = `You are an expert in deep learning and Mathematics
 Applications:
 - Use findings to improve topological data analysis for deep learning architectures.
 - Enhance generative models by incorporating hyperbolic geometry and moduli spaces.
-- Develop novel optimization algorithms inspired by handlebody mapping class groups.`
+- Develop novel optimization algorithms inspired by handlebody mapping class groups.`;
 
 CATEGORIES_GROUPT_PREFIX = `You are an expert in deep learning. Below are the titles of deep learning papers from the arXiv. Group them into categories based on their similarity, using the format {category name: paper number}. You can use different category names than the example. If possible, avoid groups with only a single element. For example:
 {
-  "Medical Imaging": [Title indices],
-  "Category Name": [Title indices],
-  "Category Name": [Title indices],
-  "Category Name": [Title indices],
-  "Category Name": [Title indices],
-  "Category Name": [Title indices],
-  "Category Name": [Title indices],
-  "Category Name": [Title indices],
-  "Category Name": [Title indices],
-  "Category Name": [Title indices]
-  }:`
-
+  "Medical Imaging": [index, index, index],
+  "Category Name": [index, index, index],
+  "Category Name": [index, index, index],
+  "Category Name": [index, index, index],
+  "Category Name": [index, index, index],
+  "Category Name": [index, index, index],
+  "Category Name": [index, index, index],
+  "Category Name": [index, index, index],
+  "Category Name": [index, index, index],
+  "Category Name": [index, index, index]
+  }:`;
 
 module.exports = {
-    OPENAI_API_KEY,
-    SLACK_TOKEN,
-    ARXIV_QUERY,
-    SATARXIV_QUERY,
-    SUNARXIV_QUERY ,
-    MAX_PAPER_COUNT,
-    ARXIV_TERM,
-    CHANNEL,
-    SELECTION_PREFIX,
-    PROMPT_PREFIX,
-    WEEKENDSELECTION_PREFIX,
-    WEEKENDPROMPT_PREFIX,
-    CATEGORIES_GROUPT_PREFIX
-  };
+  OPENAI_API_KEY,
+  SLACK_TOKEN,
+  ARXIV_QUERY,
+  SATARXIV_QUERY,
+  SUNARXIV_QUERY,
+  MAX_PAPER_COUNT,
+  ARXIV_TERM,
+  CHANNEL,
+  SELECTION_PREFIX,
+  PROMPT_PREFIX,
+  WEEKENDSELECTION_PREFIX,
+  WEEKENDPROMPT_PREFIX,
+  CATEGORIES_GROUPT_PREFIX,
+};
