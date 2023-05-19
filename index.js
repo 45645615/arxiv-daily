@@ -39,8 +39,8 @@ async function main() {
   }
 
   let output = "";
-  // const dayOfWeek = new Date().getDay();
-  const dayOfWeek = 1
+  const dayOfWeek = new Date().getDay();
+  // const dayOfWeek = 1
   // Check if it's a weekend
   let isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
   let dateRange = getDateRange(isWeekend, dayOfWeek);
