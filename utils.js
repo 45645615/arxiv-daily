@@ -22,15 +22,19 @@ function getDateRange(isWeekend, dayOfWeek) {
     console.log("Today is weekday");
     startDate = new Date();
     if (dayOfWeek === 1) {
-      startDate.setDate(startDate.getDate() - ARXIV_TERM - 2);
+      startDate.setDate(startDate.getDate() - ARXIV_TERM);
+      endDate = new Date();
+      endDate.setDate(endDate.getDate() - ARXIV_TERM - 2);
     } else {
       startDate.setDate(startDate.getDate() - ARXIV_TERM);
+      endDate = new Date(startDate);
     }
-    endDate = new Date(startDate);
+    
   }
 
   startDate = startDate.toISOString().split("T")[0].replace(/-/g, "");
   endDate = endDate.toISOString().split("T")[0].replace(/-/g, "");
+  console.log(`${endDate}0000+TO+${startDate}2359`)
   // Return date range
   return `${endDate}0000+TO+${startDate}2359`;
 }
