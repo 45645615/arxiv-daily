@@ -38,6 +38,10 @@ docker run -it --rm arxiv-daily
 Part of the code is based the following gist:
 (https://gist.github.com/resnant/d42ae67315f0c073e3c244a913f6d408) 
 by [Yuta Suzuki](https://github.com/resnant)
+
+Deep figure for figure extraction implemented from: 
+(https://github.com/allenai/deepfigures-open) 
+by [allenai](https://github.com/allenai)
 ### License
 
 This project is licensed under the MIT License.
