@@ -48,11 +48,11 @@ RUN apt-get clean \
 
 WORKDIR /work
 
-ADD ./deepfigures-open/requirements.txt /work/deepfigures-open
+ADD ./deepfigures-open/requirements.txt /work/deepfigures-open/requirements.txt
 
 RUN pip3 install --upgrade pip \
  && pip install Cython==0.25.2
-RUN pip3 install -r ./deepfigures-open/requirements.txt
+RUN pip3 install -r /work/deepfigures-open/requirements.txt
 
 RUN apt-get update \
  && apt-get install -y openjdk-11-jdk 
@@ -74,21 +74,19 @@ RUN wget "https://s3-us-west-2.amazonaws.com/ai2-s2-research-public/deepfigures/
 ADD ./deepfigures-open/vendor/tensorboxresnet /work/deepfigures-open/vendor/tensorboxresnet
 RUN pip3 install -e /work/deepfigures-open/vendor/tensorboxresnet
 
+ADD ./deepfigures-open /work/deepfigures-open
+
 RUN pip3 install --quiet -e /work/deepfigures-open
 
 # Node js stuff
 
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash \
- && . ~/.nvm/nvm.sh \
- && nvm install 14 \
- && nvm alias default 14 \
- && nvm use default
-ENV NODE_PATH /root/.nvm/v14.17.0/lib/node_modules
-ENV PATH $PATH:/root/.nvm/versions/node/v14.17.0/bin
+# Node.js installation
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt-get install -y nodejs
+
 COPY package*.json ./
 
 RUN npm install
-
 COPY . .
 
 CMD [ "node", "index.js" ]
