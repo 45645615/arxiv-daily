@@ -30,7 +30,9 @@ const {
   WEEKENDSELECTION_PREFIX,
   SELECTION_PREFIX,
   CATEGORIES_GROUPT_PREFIX,
+  PDF_CACHE,
 } = require("./template");
+const { downloadPDF } = require("./pdf");
 
 async function main() {
   if (!OPENAI_API_KEY | !SLACK_TOKEN) {
@@ -44,7 +46,7 @@ async function main() {
   // Check if it's a weekend
   let isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
   let dateRange = getDateRange(isWeekend, dayOfWeek);
-  
+
   let categories = getCategories(dayOfWeek);
 
   // Fetch papers based on the date range and categories
@@ -231,15 +233,21 @@ async function main() {
       );
       main_msg = formatMainMsg(category, categoryTitleArray);
       mainMessage = await sendMessage(main_msg);
-      output = formatOutput(
-        categoryTitleArray,
-        categoryAuthorNamesArray,
-        summaries,
-        categoryArxivUrlArray,
-        categories,
-        categoryCommentArray
-      );
-      await sendThreadReply(mainMessage.channel, output, mainMessage.ts);
+      let oo = 0
+      for (let i = 0; i < categoryTitleArray.length; i++) {
+        // Extract figure from pdf
+        await downloadPDF(categoryArxivUrlArray[i], `/${oo}.pdf`)
+        let output = formatOutput(
+          i,
+          categoryTitleArray[i],
+          categoryAuthorNamesArray[i],
+          summaries[i],
+          categoryArxivUrlArray[i],
+          categories[i],
+          categoryCommentArray[i]
+        );
+        await sendThreadReply(mainMessage.channel, output, mainMessage.ts);
+      }
     }
   }
   let cat = "";

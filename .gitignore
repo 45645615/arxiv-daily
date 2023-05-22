@@ -1,1 +1,7 @@
 build_image.sh
+test.ipynb
+pdf_cache/
+.vscode/
+node_modules/
+img/
+pdfs/

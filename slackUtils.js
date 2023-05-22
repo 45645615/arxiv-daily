@@ -20,25 +20,24 @@ function formatMainMsg(category, categoryTitleArray) {
 }
 
 function formatOutput(
-  titleArray,
-  authorNamesArray,
-  summaries,
-  arxivUrlArray,
-  categories,
-  categoryCommentArray
+  idx,
+  title,
+  authorNames,
+  summary,
+  arxivUrl,
+  category,
+  categoryComment
 ) {
   let output = "";
 
-  // Iterate through the summaries and append each paper's information to the output
-  for (let i = 0; i < titleArray.length; i++) {
-    output += `Paper ${i + 1}\nTitle: ${titleArray[i]}\nAuthors: ${
-      authorNamesArray[i]
-    }`;
-    if (categoryCommentArray[i]) {
-      output += `\nComment: ${categoryCommentArray[i]}`;
-    }
-    output += `\n\n${summaries[i]}\n\n${arxivUrlArray[i]}\n------------------------\n\n\n`;
+  output += `Paper ${idx+1}\nTitle: ${title}\nAuthors: ${
+    authorNames
+  }`;
+  if (categoryComment) {
+    output += `\nComment: ${categoryComment}`;
   }
+  output += `\n\n${summary}\n\n${arxivUrl}\n------------------------\n\n\n`;
+
   return output.trim();
 }
 

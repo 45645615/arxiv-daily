@@ -7,7 +7,7 @@ const ARXIV_QUERY = ["cat:cs.cv", "cat:cs.AI", "cat:cs.LG", "cat:cs.CL"];
 const SATARXIV_QUERY = ["cat:math.*", "cat:stat.*"];
 const SUNARXIV_QUERY = ["cat:econ.*", "cat:q-fin.*"];
 
-const MAX_PAPER_COUNT = 50;
+const MAX_PAPER_COUNT = 3;
 const ARXIV_TERM = 1;
 
 // const CHANNEL = '#daily-dose-of-arxiv'
@@ -61,7 +61,7 @@ Applications:
 - Enhance generative models by incorporating hyperbolic geometry and moduli spaces.
 - Develop novel optimization algorithms inspired by handlebody mapping class groups.`;
 
-CATEGORIES_GROUPT_PREFIX = `You are an expert in deep learning. Below are the titles of deep learning papers from the arXiv. Group them into categories based on their similarity, using the format {category name: paper number}. You can use different category names than the example. If possible, avoid groups with only a single element. For example:
+CATEGORIES_GROUPT_PREFIX = `You are an expert in deep learning. Below are the titles of deep learning papers from the arXiv. Group them into categories based on their similarity, using the format {category name: paper number}. You can use different category names than the example. If possible, avoid groups with only a single element, and avoid using Miscellaneous as a group. For example:
 {
   "Medical Imaging": [index, index, index],
   "Category Name": [index, index, index],
@@ -74,6 +74,8 @@ CATEGORIES_GROUPT_PREFIX = `You are an expert in deep learning. Below are the ti
   "Category Name": [index, index, index],
   "Category Name": [index, index, index]
   }:`;
+
+PDF_CACHE = "./pdf_cache";
 
 module.exports = {
   OPENAI_API_KEY,
@@ -89,4 +91,5 @@ module.exports = {
   WEEKENDSELECTION_PREFIX,
   WEEKENDPROMPT_PREFIX,
   CATEGORIES_GROUPT_PREFIX,
+  PDF_CACHE,
 };
